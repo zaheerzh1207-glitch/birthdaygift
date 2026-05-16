@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Asika! 🎉</title>
+    <style>
+        :root {
+            --primary-color: #ff758c;
+            --secondary-color: #ff7eb3;
+            --text-color: #2c3e50;
+            --bg-color: #fff5f6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            text-align: center;
+        }
+
+        /* Welcome Overlay */
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+            color: white;
+        }
+
+        #overlay h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            padding: 0 20px;
+        }
+
+        .open-btn {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background-color: white;
+            color: var(--primary-color);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+
+        .open-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Main Content Container */
+        .main-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease 0.5s;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            display: none; 
+            position: relative;
+            z-index: 5;
+        }
+
+        .main-content.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Header Section */
+        header {
+            margin: 50px 0;
+        }
+
+        header h2 {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        /* Birthday Message */
+        .message-box {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        /* Section Titles */
+        .gallery-title {
+            color: var(--primary-color);
+            margin: 40px 0 20px 0;
+            font-size: 1.8rem;
+        }
+        
+        .paanai-title {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            color: #d1526d;
+            font-weight: bold;
+            font-size: 2.2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Timeline Styling */
+        .timeline-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+            padding: 20px 0;
+        }
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: var(--primary-color);
+            top: 0;
+            bottom: 0;
+            left: 20px;
+            margin-left: -2px;
+            border-radius: 2px;
+        }
+        .timeline-block {
+            position: relative;
+            margin-bottom: 30px;
+            text-align: left;
+            padding-left: 60px;
+        }
+        .timeline-badge {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            left: 0;
+            background: white;
+            border: 3px solid var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            z-index: 2;
+        }
+        .timeline-content {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .timeline-content h4 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        /* Capsule Box Styling */
+        .capsule-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        .capsule-card {
+            width: 230px;
+            height: 150px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        .capsule-front, .capsule-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.6s ease, opacity 0.4s ease;
+            backface-visibility: hidden;
+        }
+        .capsule-front {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            font-size: 1.1rem;
+        }
+        .capsule-back {
+            background: white;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transform: rotateY(180deg);
+            line-height: 1.4;
+            border: 2px solid var(--primary-color);
+        }
+        .capsule-card.flipped .capsule-front {
+            transform: rotateY(180deg);
+        }
+        .capsule-card.flipped .capsule-back {
+            transform: rotateY(360deg);
+        }
+
+        /* Galleries Styling */
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        /* Multipage Sections Style */
+        .next-page-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-in-out;
+            border-top: 2px dashed var(--secondary-color);
+            padding-top: 30px;
+            margin-top: 40px;
+        }
+        .next-page-section.show-page {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .photo-card {
+            background: white;
+            padding: 12px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transform: rotate(var(--r));
+            transition: transform 0.3s ease;
+            width: 280px;
+        }
+
+        .photo-card:hover {
+            transform: rotate(0deg) scale(1.05);
+            z-index: 10;
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 360px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .photo-card p {
+            margin-top: 12px;
+            font-style: italic;
+            color: #555;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* Custom Closing Text Styling */
+        .closing-text {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 40px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+            animation: bounce 2.5s infinite;
+        }
+
+        /* Styled Navigation Buttons */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px auto 40px auto;
+        }
+        .page-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 117, 140, 0.4);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .page-btn:hover {
+            background-color: #e65c73;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 117, 140, 0.5);
+        }
+        .page-btn.secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            box-shadow: none;
+        }
+        .page-btn.secondary:hover {
+            background-color: var(--bg-color);
+            transform: translateY(-2px);
+        }
+
+        /* Floating Audio Controller */
+        .audio-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            z-index: 100;
+        }
+
+        /* Animations */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            z-index: 999;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="neethane_neethane.mp3" type="audio/mpeg">
+    </audio>
+
+    <button class="audio-control" onclick="toggleMusic()" id="music-btn">🎵</button>
+
+    <div id="overlay">
+        <h1>A Birthday Surprise for Asika... 🎁</h1>
+        <button class="open-btn" onclick="startCelebration()">Click to Open Card</button>
+    </div>
+
+    <div class="main-content" id="main-content">
+        <header>
+            <h2>Happy Birthday, Asika! 🎂</h2>
+            <p>Wishing you a day as wonderful and beautiful as you are!</p>
+        </header>
+
+        <section class="message-box">
+            <p>To my lovely friend, Asika ✨</p>
+            <br>
+            <p>Thank you for being such an incredible light in this world. Your beautiful smile, kind heart, and amazing energy make every moment brighter. I hope this birthday brings you endless joy, laughter, and everything your heart desires.</p>
+            <br>
+            <p>Cheers to you and another year of making unforgettable memories! 🥂</p>
+        </section>
+
+        <h3 class="gallery-title">Our 2-Year Journey ✨</h3>
+        <section class="timeline-container">
+            <div class="timeline-block">
+                <div class="timeline-badge">🌱</div>
+                <div class="timeline-content">
+                    <h4>Where It All Began</h4>
+                    <p>Two years ago, our paths crossed. From formal greetings to non-stop chatting, this is where a wonderful friendship started taking root!</p>
+                </div>
+            </div>
+
+            <div class="timeline-block">
+                <div class="timeline-badge">🤗</div>
+                <div class="timeline-content">
+                    <h4>The Inside Jokes & Triumphs</h4>
+                    <p>A year flew by filled with constant support, celebrating achievements, and building a trust that made challenges feel so much lighter.</p>
+                </div>
+            </div>
+
+            <div class="timeline-block">
+                <div class="timeline-badge">💫</div>
+                <div class="timeline-content">
+                    <h4>To Today & Beyond</h4>
+                    <p>Two full years of unforgettable memories, shared smiles, and an unbreakable bond. Happy Birthday to the friend who makes every day brighter!</p>
+                </div>
+            </div>
+        </section>
+
+        <h3 class="gallery-title">Tap to Open Your Surprises 🎁</h3>
+        <div class="capsule-grid">
+            <div class="capsule-card" onclick="revealCapsule(this)">
+                <div class="capsule-front">📦 Box of Joy</div>
+                <div class="capsule-back">Your incredible energy and beautiful smile have a way of lifting everyone's spirits. Thank you for bringing pure happiness into these past 2 years! ☀️</div>
+            </div>
+            <div class="capsule-card" onclick="revealCapsule(this)">
+                <div class="capsule-front">🛡️ Box of Support</div>
+                <div class="capsule-back">Through the ups, downs, and everything in between, knowing I have a friend like you makes the journey so much sweeter. Cheers to always having each other's backs! 🙌</div>
+            </div>
+            <div class="capsule-card" onclick="revealCapsule(this)">
+                <div class="capsule-front">⭐ Box of Wishes</div>
+                <div class="capsule-back">May this next year bring you endless laughter, breakthrough successes, and everything your kind heart desires. You deserve the best, Asika! 🎂</div>
+            </div>
+        </div>
+
+        <div id="section-page-1">
+            <h3 class="gallery-title paanai-title">✨🫕 Cute Paanai 🫕✨</h3>
+            <div class="gallery">
+                <div class="photo-card" style="--r: -3deg;">
+                    <img src="1000077554.jpg.jpeg" alt="Asika Portrait">
+                    <p>Looking absolutely stunning! ✨</p>
+                </div>
+
+                <div class="photo-card" style="--r: 3deg;">
+                    <img src="1000077536.jpg.jpeg" alt="Asika Memories">
+                    <p>Cherishing every happy moment! 💜</p>
+                </div>
+            </div>
+            <div class="btn-container">
+                <button class="page-btn" id="to-page-2-btn" onclick="changePage(1, 2)">Next Page ➡️</button>
+            </div>
+        </div>
+
+        <div class="next-page-section" id="section-page-2">
+            <h3 class="gallery-title paanai-title">✨🫕 Cute Paanai - Page 2 🫕✨</h3>
+            <div class="gallery">
+                <div class="photo-card" style="--r: -2deg;">
+                    <img src="WhatsApp Image 2026-05-17 at 00.53.43 (1).jpeg" alt="Asika Traditional Look">
+                    <p>Elegance in every single frame! 💛</p>
+                </div>
+
+                <div class="photo-card" style="--r: 4deg;">
+                    <img src="WhatsApp Image 2026-05-17 at 00.53.43.jpeg" alt="Asika Saree Portrait">
+                    <p>Graceful smiles and gold tones! ✨</p>
+                </div>
+            </div>
+            <div class="btn-container">
+                <button class="page-btn secondary" onclick="changePage(2, 1)">⬅️ Back</button>
+                <button class="page-btn" id="to-page-3-btn" onclick="changePage(2, 3)">Next Page ➡️</button>
+            </div>
+        </div>
+
+        <div class="next-page-section" id="section-page-3">
+            <h3 class="gallery-title paanai-title">✨ oru comedy photo aachu venum la 😂 ✨</h3>
+            <div class="gallery">
+                <div class="photo-card" style="--r: -1deg; width: 300px; margin: 0 auto;">
+                    <img src="WhatsApp Image 2026-05-17 at 00.53.47.jpeg" alt="Asika with Penguin Toy" style="height: 400px;">
+                    <p>Met a new cute companion! 🐧💙</p>
+                </div>
+            </div>
+            
+            <div class="closing-text">
+                Oii !! paanaii 🩷 Gift puduchurukka !!
+            </div>
+
+            <div class="btn-container">
+                <button class="page-btn secondary" onclick="changePage(3, 2)">⬅️ Back to Page 2</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startCelebration() {
+            const overlay = document.getElementById('overlay');
+            const mainContent = document.getElementById('main-content');
+            
+            if (overlay) {
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.style.display = 'none', 500);
+            }
+            if (mainContent) {
+                mainContent.style.display = 'block';
+                setTimeout(() => mainContent.classList.add('show'), 50);
+            }
+
+            // Safe Music Player execution
+            try {
+                const music = document.getElementById('bg-music');
+                if (music) {
+                    let playPromise = music.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(error => console.log("Audio waiting for user play interaction."));
+                    }
+                }
+            } catch (e) {
+                console.log("Audio playback failed quietly: ", e);
+            }
+            
+            // Safe Confetti trigger
+            try {
+                createConfetti();
+            } catch (e) {
+                console.log("Confetti failed quietly: ", e);
+            }
+
+            // Ambient background words trigger
+            try {
+                createFloatingWords();
+            } catch (e) {
+                console.log("Floating words failed quietly: ", e);
+            }
+        }
+
+        function toggleMusic() {
+            const music = document.getElementById('bg-music');
+            const musicBtn = document.getElementById('music-btn');
+            if (!music) return;
+
+            if (music.paused) {
+                music.play().catch(e => console.log(e));
+                musicBtn.innerText = '🎵';
+            } else {
+                music.pause();
+                musicBtn.innerText = '🔇';
+            }
+        }
+
+        function createConfetti() {
+            const colors = ['#ff758c', '#ff7eb3', '#f2d74e', '#5cd699', '#5cc0de'];
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                confetti.style.opacity = Math.random();
+                confetti.style.transform = `scale(${Math.random()})`;
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        function revealCapsule(element) {
+            element.classList.toggle('flipped');
+        }
+
+        function createFloatingWords() {
+            const words = ['Kindness', 'Laughter', 'Trust', 'Support', '2 Years', 'Memories', 'Happiness', 'Best Friend', 'Smile', 'Inspiration'];
+            for (let i = 0; i < 15; i++) {
+                const wordEl = document.createElement('div');
+                wordEl.innerText = words[Math.floor(Math.random() * words.length)];
+                wordEl.style.position = 'fixed';
+                wordEl.style.zIndex = '1';
+                wordEl.style.color = 'rgba(255, 117, 140, 0.12)'; 
+                wordEl.style.fontWeight = 'bold';
+                wordEl.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+                wordEl.style.left = Math.random() * 90 + 'vw';
+                wordEl.style.top = Math.random() * 90 + 'vh';
+                wordEl.style.pointerEvents = 'none'; 
+                document.body.appendChild(wordEl);
+            }
+        }
+
+        // Multipage Smooth Navigation Engine
+        function changePage(fromPage, toPage) {
+            const currentSection = document.getElementById(`section-page-${fromPage}`);
+            const targetSection = document.getElementById(`section-page-${toPage}`);
+            const targetTitle = targetSection.querySelector('.paanai-title');
+
+            if (targetSection) {
+                // Show destination structure
+                targetSection.classList.add('show-page');
+                
+                // Hide source's button blocks to keep view clean if moving forward
+                if (fromPage < toPage && fromPage !== 1) {
+                    currentSection.querySelector('.btn-container').style.display = 'none';
+                } else if (fromPage > toPage) {
+                    // Bring back buttons on current source section when backing up
+                    targetSection.querySelector('.btn-container').style.display = 'flex';
+                    currentSection.classList.remove('show-page');
+                }
+
+                if(fromPage == 1 && toPage == 2) {
+                    document.getElementById('to-page-2-btn').style.display = 'none';
+                }
+
+                // Smoothly focus eye onto destination header
+                setTimeout(() => {
+                    if (targetTitle) {
+                        targetTitle.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } else {
+                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 80);
+            }
+        }
+    </script>
+</body>
+</html>
